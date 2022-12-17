@@ -6,7 +6,7 @@ This repo will look at recent model releases from Meta AI and provide demonstrat
 
 ## Getting Started
 
-To set up your python environment to run the code in this repository, follow the instructions below. Note this report relies heavily on Conda, PyTorch, and HugingFace libraries. We will set up these now. Specifics for individual model setups are located in their respective folders.
+To set up your python environment to run the code in this repository, follow the instructions below. Note this repo relies heavily on Conda, PyTorch, and HugingFace libraries. We will set up these now. Specifics for individual model setups are located in their respective folders.
 
 1. Create (and activate) a new environment with Python 3.8.
 
@@ -18,10 +18,11 @@ To set up your python environment to run the code in this repository, follow the
 2. Clone the repository (if you haven't already!), and navigate to the `ApplyMetaAI` folder.  
 
     ```bash
- git clone https://github.com/bohoro/ApplyMetaAI.git
+    git clone https://github.com/bohoro/ApplyMetaAI.git
     ```
 
 3. Install Pytorch
+
     For specifics to your system see - [Installing PyTorch](https://pytorch.org/get-started/locally/)
     Example:
 
