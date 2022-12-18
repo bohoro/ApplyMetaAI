@@ -4,7 +4,7 @@
 
 Galactica is a decoder-only transformer-based large language model that can store, combine and reason about scientific knowledge. The model was trained on a large scientific corpus of papers, reference material, and knowledge bases.
 
-```
+```text
 GALACTICA: A Large Language Model for Science
 Ross Taylor and Marcin Kardas and Guillem Cucurull and Thomas Scialom and Anthony Hartshorn and Elvis Saravia and Andrew Poulton and Viktor Kerkez and Robert Stojnic
 2022
@@ -27,6 +27,19 @@ Full model details can be found in the release [paper](https://galactica.org/sta
 
     ```bash
     The Transformer architecture [START_REF] Attention is All you Need, Vaswani[END_REF].
+    ```
+
+3. Install Streamlit by running
+
+    ```bash
+    pip install accelerate
+    pip install streamlit
+    ```
+
+4. Run the Demo
+
+    ```bash
+    streamlit run galactica_citation_demo.py --server.port 9999
     ```
 
 ## More Information
