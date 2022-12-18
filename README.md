@@ -1,4 +1,4 @@
-# ApplyMetaAI
+# Apply Meta AI 
 
 ## Applications of Meta AI Foundational Research
 
