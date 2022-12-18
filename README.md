@@ -80,3 +80,7 @@ To set up your python environment to run the code in this repository, follow the
     ```bash
     [{'label': 'POSITIVE', 'score': 0.9790696501731873}]
     ```
+
+## Demos
+
+* Scientific Text Generation with the META AI's [GALACTICA Model](https://github.com/bohoro/ApplyMetaAI/tree/main/GALACTICA)
