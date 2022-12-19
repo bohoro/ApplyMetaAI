@@ -26,7 +26,7 @@ Full model details can be found in the release [paper](https://galactica.org/sta
     Output
 
     ```bash
-    The Transformer architecture [START_REF] Attention is All you Need, Vaswani[END_REF].
+    The Transformer architecture [START_REF] Attention is All you Need, Vaswani[END_REF] is a popular choice for sequence-to-sequence models. It consists of a stack of encoder and decoder layers,
     ```
 
 3. Install Streamlit by running
