@@ -46,11 +46,13 @@ def run_model(source, capability):
 # Basic streamlit App
 st.title("Galactica Demo", anchor=None)
 st.write(
-    "GALACTICA is a general-purpose scientific language model trained on a large corpus of scientific text and data."
+    """GALACTICA is a general-purpose scientific language model trained on 
+    a large corpus of scientific text and data."""
 )
 source = st.text_input("Source", max_chars=512)
 st.write(
-    "GALACTICA is is not instruction tuned. Because of this you need to use the correct prompts to get good results."
+    """GALACTICA is is not instruction tuned. Because of this you need to 
+    use the correct prompts to get good results."""
 )
 option = st.selectbox(
     "What Galactica Capability do you want?",
@@ -68,7 +70,8 @@ if button:
     with st.spinner("Galactica inference running..."):
         model_output = run_model(source.strip(), option)
 
-    # Set the value of the model_outputs text box to the value of the model_output variable
+    # Set the value of the model_outputs text box to the value of
+    # the model_output variable
     if option in ("Predict LaTeX", "Reasoning"):
         st.latex(model_output)
     else:
