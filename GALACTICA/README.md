@@ -17,7 +17,7 @@ Full model details can be found in the release [paper](https://galactica.org/sta
 ## Instructions
 
 1. Install base requirements from the repo's main [README.md](https://github.com/bohoro/ApplyMetaAI/blob/main/README.md).
-2. Test using the smallest model.
+2. Test using a small version of the model.
 
     ```bash
     python test_inference.py
