@@ -1,6 +1,6 @@
-import torch
 import numpy as nn
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import torch
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
 tokenizer = AutoTokenizer.from_pretrained("roberta-base-openai-detector")
 model = AutoModelForSequenceClassification.from_pretrained(

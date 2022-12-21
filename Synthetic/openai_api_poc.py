@@ -1,7 +1,9 @@
 # Set up the OpenAI ChatGPT API client
+import os
+
 import openai
 
-openai.api_key = "NNNN"
+openai.api_key = os.environ["OAI_TOKEN"]
 
 # Get GPT Completion
 def compare_responses(prompt, length=1024):
