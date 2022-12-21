@@ -85,4 +85,4 @@ To set up your python environment to run the code in this repository, follow the
 
 * Scientific Text Generation with the META AI's [GALACTICA Model](https://github.com/bohoro/ApplyMetaAI/tree/main/GALACTICA)
 
-* Synthetic Text Detection and Text Similarities (Is someone using GPT-3?) [Synthetic](https://github.com/bohoro/ApplyMetaAI/tree/main/Synthetic)
+* Synthetic Text Detection and Text Similarities (Is someone using GPT-3?) [Synthetic Text Detection](https://github.com/bohoro/ApplyMetaAI/tree/main/Synthetic)
