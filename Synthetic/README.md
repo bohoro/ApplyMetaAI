@@ -26,7 +26,13 @@ In the demo, we will combine both approaches to see if a response to a given pro
 
     Cosine-Similarity: tensor([[0.6153]])
 
-4. Run the app
+4. Place your OpenAI api key in the env var OAI_TOKEN
+
+    ```bash
+    export OAI_TOKEN=XXXYYYZZZ
+    ```
+
+5. Run the app
 
     ```bash
     streamlit run answer_checker.py --server.port 9999
