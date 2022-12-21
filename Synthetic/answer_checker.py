@@ -95,7 +95,7 @@ def check_similarity(sent1, sent2):
     return util.cos_sim(emb1, emb2).data[0][0]
 
 
-"""Streamlit UI Code below"""
+# Streamlit UI Code below
 
 st.title("Synthetic Output Detector Demo")
 
