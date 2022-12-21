@@ -10,7 +10,7 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer
 # models uses in demo
 st_model_spec = "all-distilroberta-v1"
 dectector_model = "roberta-base-openai-detector"
-opanai_engine = "text-davinci-002"
+opanai_engine = "text-curie-001"  # "text-davinci-002" for best performance
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
