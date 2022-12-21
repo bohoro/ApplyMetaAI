@@ -4,6 +4,12 @@
 
 This repo will look at recent model releases from Meta AI and provide demonstrations to develop your use cases and speed up your research to production efforts.
 
+## Demos
+
+* Scientific Text Generation with the META AI's [GALACTICA Model](https://github.com/bohoro/ApplyMetaAI/tree/main/GALACTICA)
+
+* Synthetic Text Detection and Text Similarities (Is someone using GPT-3?) [Synthetic Text Detection](https://github.com/bohoro/ApplyMetaAI/tree/main/Synthetic)
+
 ## Getting Started
 
 To set up your python environment to run the code in this repository, follow the instructions below. Note this repo relies heavily on Conda, PyTorch, and HugingFace libraries. We will set up these now. Specifics for individual model setups are located in their respective folders.
@@ -81,8 +87,4 @@ To set up your python environment to run the code in this repository, follow the
     [{'label': 'POSITIVE', 'score': 0.9790696501731873}]
     ```
 
-## Demos
 
-* Scientific Text Generation with the META AI's [GALACTICA Model](https://github.com/bohoro/ApplyMetaAI/tree/main/GALACTICA)
-
-* Synthetic Text Detection and Text Similarities (Is someone using GPT-3?) [Synthetic Text Detection](https://github.com/bohoro/ApplyMetaAI/tree/main/Synthetic)
