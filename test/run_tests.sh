@@ -1,7 +1,7 @@
 #!/bin/bash
 pause_me(){
     echo "Press any key to continue..."
-    read -n 1 -s
+    read -n 1
 }
 echo python test_pytorch.py
 python test_pytorch.py
