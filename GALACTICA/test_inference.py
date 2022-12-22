@@ -2,7 +2,8 @@ from transformers import AutoTokenizer, OPTForCausalLM
 import torch
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print(f"Using device: [{device}]")
+print("Using device:", device)
+
 if device.type == "cpu":
     fb_model = "facebook/galactica-125m"  # also 1.3b, 30b, and 120b
 else:
