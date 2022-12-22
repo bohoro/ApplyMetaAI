@@ -6,7 +6,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("Using device:", device)
 
 tokenizer = AutoTokenizer.from_pretrained("roberta-base-openai-detector")
-if device == "cpu":
+if device.type == "cpu":
     model = AutoModelForSequenceClassification.from_pretrained(
         "roberta-base-openai-detector"
     )

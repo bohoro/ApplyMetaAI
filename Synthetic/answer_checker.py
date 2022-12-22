@@ -21,7 +21,7 @@ if "tokenizer" not in st.session_state:
     os.environ["TOKENIZERS_PARALLELISM"] = "false"
     with st.spinner("Loading Tokenizer and Model..."):
         st.session_state["tokenizer"] = AutoTokenizer.from_pretrained(dectector_model)
-        if device == "cpu":
+        if device.type == "cpu":
             st.session_state[
                 "model"
             ] = AutoModelForSequenceClassification.from_pretrained(dectector_model)
