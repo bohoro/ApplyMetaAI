@@ -4,12 +4,15 @@ model_sepc = "all-distilroberta-v1"
 model = SentenceTransformer(model_sepc)
 
 
-def compare_sentences(sent1, sent2):
+def compare_sentences(sent1: str, sent2: str) -> float:
     """takes 2 sentences, returns the Cosine Similarity"""
-    # Sentences are encoded by calling model.encode()
-    emb1 = model.encode(sent1)
-    emb2 = model.encode(sent2)
-    return util.cos_sim(emb1, emb2)
+    try:
+        # Sentences are encoded by calling model.encode()
+        emb1 = model.encode(sent1)
+        emb2 = model.encode(sent2)
+        return util.cos_sim(emb1, emb2)
+    except Exception as e:
+        print("Error comparing sentences: ", e)
 
 
 def main():

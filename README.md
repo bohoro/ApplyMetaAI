@@ -26,14 +26,19 @@ To set up your python environment to run the code in this repository, follow the
     ```bash
     git clone https://github.com/bohoro/ApplyMetaAI.git
     ```
-
+    
 3. Install Pytorch
 
     For specifics to your system see - [Installing PyTorch](https://pytorch.org/get-started/locally/)
     Example:
-
+    Linux & GPU
     ```bash
     conda install pytorch torchvision torchaudio pytorch-cuda=11.6 -c pytorch -c nvidia
+    ```
+
+    Mac Specific 
+    ```bash
+    conda install pytorch torchvision torchaudio -c pytorch
     ```
 
 4. Test PyTorch Install

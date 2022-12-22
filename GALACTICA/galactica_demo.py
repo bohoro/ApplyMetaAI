@@ -4,7 +4,7 @@ import streamlit as st
 from transformers import AutoTokenizer, OPTForCausalLM
 
 # Define the model (size)
-fb_model = "facebook/galactica-6.7b"  # also 1.3b, 30b, and 120b
+fb_model = "facebook/galactica-1.3b"  # also 1.3b, 30b, and 120b
 
 # if the model is not already in the session state, create and store it
 if "tokenizer" not in st.session_state:

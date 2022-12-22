@@ -8,7 +8,7 @@ import torch
 from sentence_transformers import SentenceTransformer, util
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
-# models uses in demo
+# models used in demo
 st_model_spec = "all-distilroberta-v1"
 dectector_model = "roberta-base-openai-detector"
 opanai_engine = "text-curie-001"  # "text-davinci-002" for best performance
@@ -52,45 +52,63 @@ openai.api_key = os.environ["OAI_TOKEN"]
 
 
 @st.cache(suppress_st_warning=True)
-def get_gpt_response(prompt, length=1024):
-    """Get GPT Completion using the prompt"""
-    api_response = (
-        openai.Completion.create(
-            engine=opanai_engine,
-            prompt=prompt,
-            temperature=0.3,
-            max_tokens=length,
-            top_p=1,
-            frequency_penalty=0,
-            presence_penalty=0,
+def get_gpt_response(prompt: str, length: int = 1024) -> str:
+    """Get GPT Completion using the prompt."""
+    try:
+        api_response = (
+            openai.Completion.create(
+                engine=opanai_engine,
+                prompt=prompt,
+                temperature=0.3,
+                max_tokens=length,
+                top_p=1,
+                frequency_penalty=0,
+                presence_penalty=0,
+            )
+            .choices[0]
+            .text
         )
-        .choices[0]
-        .text
-    )
+    except Exception as e:
+        api_response = f"Error: {e}"
     return api_response
 
 
-def check_fake(input_text):
+def check_fake(input_text: str) -> tuple[str, float]:
     """Use the GPT dector to see if Fake"""
-    input_ids = tokenizer(input_text, return_tensors="pt").input_ids.to(device)
+    try:
+        # tokenize the input text
+        input_ids = tokenizer(input_text, return_tensors="pt").input_ids.to(device)
 
-    with torch.no_grad():
-        logits = model(input_ids).logits
+        with torch.no_grad():
+            # run the GPT model to get the logits
+            logits = model(input_ids).logits
 
-    predicted_class_id = logits.argmax().item()
-    predicted_probs = torch.nn.functional.softmax(logits, dim=1).data.tolist()[0]
-    return (
-        model.config.id2label[predicted_class_id],
-        predicted_probs[nn.argmax(predicted_probs)],
-    )
+        # get the predicted class ID and probability
+        predicted_class_id = logits.argmax().item()
+        predicted_probs = torch.nn.functional.softmax(logits, dim=1).data.tolist()[0]
+        return (
+            model.config.id2label[predicted_class_id],
+            predicted_probs[nn.argmax(predicted_probs)],
+        )
+    except Exception as e:
+        return f"error - {e}", 0.0
 
 
-def check_similarity(sent1, sent2):
+def check_similarity(sent1: str, sent2: str) -> float:
     """takes 2 sentences, returns the Cosine Similarity"""
     # Sentences are encoded by calling model.encode()
-    emb1 = st_model.encode(sent1)
-    emb2 = st_model.encode(sent2)
-    return util.cos_sim(emb1, emb2).data[0][0]
+    try:
+        emb1 = st_model.encode(sent1)
+        emb2 = st_model.encode(sent2)
+    except Exception as e:
+        print("Can't encode sentences - ", e)
+        return -1
+    # Cosine similarity is computed by calling util.cos_sim()
+    try:
+        return util.cos_sim(emb1, emb2).data[0][0]
+    except Exception as e:
+        print("Can't compute similarity - ", e)
+        return -1
 
 
 # Streamlit UI Code below
@@ -105,6 +123,19 @@ student_response = st.text_area(
     max_chars=1024,
     height=260,
 )
+
+# Check that the prompt and student response are not empty
+if not prompt or not student_response:
+    st.error("Please enter a prompt and a student response.")
+    st.stop()
+
+# Check that the student response is not too long
+if len(student_response) > 1024:
+    st.error(
+        "The student response is too long. Please enter a student response that is 1024 characters or less."
+    )
+    st.stop()
+
 
 # When the submit button is clicked, run the models and show the predictions
 if st.button("Submit"):

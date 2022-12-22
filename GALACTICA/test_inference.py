@@ -1,13 +1,15 @@
 from transformers import AutoTokenizer, OPTForCausalLM
+import torch
 
-MODEL = "facebook/galactica-1.3b"
+MODEL = "facebook/galactica-6.7"
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-def test_inference(input_text):
+def test_inference(input_text: str) -> str:
     tokenizer = AutoTokenizer.from_pretrained(MODEL)
     model = OPTForCausalLM.from_pretrained(MODEL, device_map="auto")
 
-    input_ids = tokenizer(input_text, return_tensors="pt").input_ids.to("cuda")
+    input_ids = tokenizer(input_text, return_tensors="pt").input_ids.to(device)
     outputs = model.generate(input_ids, max_new_tokens=32)
 
     return tokenizer.decode(outputs[0])
