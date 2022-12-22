@@ -1,3 +1,4 @@
+#!/bin/bash
 pause_me(){
     echo "Press any key to continue..."
     read -n 1 -s
