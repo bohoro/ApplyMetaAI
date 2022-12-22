@@ -1,19 +1,23 @@
 import os
-
+import torch
 import streamlit as st
 from transformers import AutoTokenizer, OPTForCausalLM
 
 # Define the model (size)
 fb_model = "facebook/galactica-6.7b"  # also 1.3b, 30b, and 120b
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # if the model is not already in the session state, create and store it
 if "tokenizer" not in st.session_state:
     os.environ["TOKENIZERS_PARALLELISM"] = "false"
     with st.spinner("Loading Galactica Tokenizer and Model..."):
         st.session_state["tokenizer"] = AutoTokenizer.from_pretrained(fb_model)
-        st.session_state["model"] = OPTForCausalLM.from_pretrained(
-            fb_model, device_map="auto"
-        )
+        if device != "cpu":
+            st.session_state["model"] = OPTForCausalLM.from_pretrained(fb_model)
+        else:
+            st.session_state["model"] = OPTForCausalLM.from_pretrained(
+                fb_model, device_map="auto"
+            )
     st.success(f"The {fb_model} Tokenizer and Model Downloaded and Ready!")
 
 tokenizer = st.session_state["tokenizer"]
@@ -38,7 +42,7 @@ def run_model(source, capability):
     """
     tag = capabilities_map[capability]
     input_text = f"{source}{tag}"
-    input_ids = tokenizer(input_text, return_tensors="pt").input_ids.to("cuda")
+    input_ids = tokenizer(input_text, return_tensors="pt").input_ids.to(device)
     outputs = model.generate(input_ids, max_new_tokens=60)
     return tokenizer.decode(outputs[0])
 

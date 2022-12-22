@@ -2,10 +2,19 @@ import numpy as nn
 import torch
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print("Using device:", device)
+
 tokenizer = AutoTokenizer.from_pretrained("roberta-base-openai-detector")
-model = AutoModelForSequenceClassification.from_pretrained(
-    "roberta-base-openai-detector", device_map="auto"
-)
+if device == "cpu":
+    model = AutoModelForSequenceClassification.from_pretrained(
+        "roberta-base-openai-detector"
+    )
+else:
+    model = AutoModelForSequenceClassification.from_pretrained(
+        "roberta-base-openai-detector", device_map="auto"
+    )
+
 input_text = """Wikipedia was launched by Jimmy Wales and Larry Sanger on 
 January 15, 2001. Sanger coined its name as a blend of wiki and 
 encyclopedia.[5][6] Wales was influenced by the "spontaneous order" 
@@ -19,7 +28,7 @@ as of November 2020.[8][9] In 2006, Time magazine stated that the policy
 of allowing anyone to edit had made Wikipedia the "biggest (and perhaps 
 best) encyclopedia in the world".[10]"""
 
-input_ids = tokenizer(input_text, return_tensors="pt").input_ids.to("cuda")
+input_ids = tokenizer(input_text, return_tensors="pt").input_ids.to(device)
 
 with torch.no_grad():
     logits = model(input_ids).logits

@@ -15,14 +15,22 @@ opanai_engine = "text-curie-001"  # "text-davinci-002" for best performance
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+
 # if the models are not already in the session state, initialize and store
 if "tokenizer" not in st.session_state:
     os.environ["TOKENIZERS_PARALLELISM"] = "false"
     with st.spinner("Loading Tokenizer and Model..."):
         st.session_state["tokenizer"] = AutoTokenizer.from_pretrained(dectector_model)
-        st.session_state["model"] = AutoModelForSequenceClassification.from_pretrained(
-            dectector_model, device_map="auto"
-        )
+        if device == "cpu":
+            st.session_state[
+                "model"
+            ] = AutoModelForSequenceClassification.from_pretrained(dectector_model)
+        else:
+            st.session_state[
+                "model"
+            ] = AutoModelForSequenceClassification.from_pretrained(
+                dectector_model, device_map="auto"
+            )
         st.session_state["st_model"] = SentenceTransformer(st_model_spec)
     st.success("The Tokenizer and Model Downloaded and Ready!")
 

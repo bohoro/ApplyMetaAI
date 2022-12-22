@@ -6,9 +6,9 @@ pause_me(){
 echo python test_pytorch.py
 python test_pytorch.py
 pause_me
-echo python ../GALACTICA/test_inference.py 
-python ../GALACTICA/test_inference.py
-pause_me
+#echo python ../GALACTICA/test_inference.py 
+#python ../GALACTICA/test_inference.py
+#pause_me
 echo python ../Synthetic/openai_api_poc.py
 python ../Synthetic/openai_api_poc.py
 pause_me
