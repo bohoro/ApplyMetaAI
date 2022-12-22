@@ -1,4 +1,5 @@
 import os
+from functools import lru_cache
 
 import numpy as nn
 import openai
@@ -50,12 +51,9 @@ the laws of God and Christian morality."""
 openai.api_key = os.environ["OAI_TOKEN"]
 
 
+@st.cache(suppress_st_warning=True)
 def get_gpt_response(prompt, length=1024):
     """Get GPT Completion using the prompt"""
-    # A helpful rule of thumb is that one token generally corresponds to ~4
-    # characters of text for common English text. For max_tokens, divide chars
-    # by 3 to be conservative.
-    length += int(len(prompt) / 3)
     api_response = (
         openai.Completion.create(
             engine=opanai_engine,
@@ -118,7 +116,7 @@ if st.button("Submit"):
 
     with st.spinner("Running Models..."):
         # run gpt-3
-        ai_genenerated = get_gpt_response(prompt, len(student_response)).lstrip()
+        ai_genenerated = get_gpt_response(prompt=prompt).lstrip()
         st.text_area("GPT-3 Output", value=ai_genenerated)
 
         # Compare the student's response to the GPT API, cosine similarity
