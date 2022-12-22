@@ -1,7 +1,7 @@
 from transformers import AutoTokenizer, OPTForCausalLM
 import torch
 
-MODEL = "facebook/galactica-6.7"
+MODEL = "facebook/galactica-6.7b"
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 

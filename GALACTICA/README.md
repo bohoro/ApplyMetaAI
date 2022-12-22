@@ -39,7 +39,7 @@ Full model details can be found in the release [paper](https://galactica.org/sta
 4. Run the Demo
 
     ```bash
-    streamlit run galactica_citation_demo.py --server.port 9999
+    streamlit run galactica_demo.py --server.port 9999
     ```
 
 ## More Information

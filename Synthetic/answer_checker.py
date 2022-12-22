@@ -73,7 +73,7 @@ def get_gpt_response(prompt: str, length: int = 1024) -> str:
     return api_response
 
 
-def check_fake(input_text: str) -> tuple[str, float]:
+def check_fake(input_text: str) -> tuple:
     """Use the GPT dector to see if Fake"""
     try:
         # tokenize the input text
