@@ -1,6 +1,7 @@
 import os
-import torch
+
 import streamlit as st
+import torch
 from transformers import AutoTokenizer, OPTForCausalLM
 
 # Define the model (size)
