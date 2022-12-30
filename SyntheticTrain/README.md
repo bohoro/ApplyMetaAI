@@ -61,6 +61,7 @@ Our key results (KR) for the success metrics are:
 6. Train (fine tune) the new model
 
     ```bash
+    pip install datasets
     ...
     ```
 

@@ -1,56 +1,51 @@
-import torch
-import fire
-from transformers import AutoModelForSequenceClassification, AutoTokenizer
-import eval_utils
 import pdb
-import numpy as nn
-from sklearn.metrics import accuracy_score
+from typing import Optional
 
+import fire
+import numpy as nn
+import torch
+from sklearn.metrics import accuracy_score
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
+
+import eval_utils
+
+# Set device to GPU if available, otherwise CPU
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+# Define the model to be used
 dectector_model = "roberta-base-openai-detector"
 
 
-def intialize_model():
-    tokenizer = AutoTokenizer.from_pretrained(dectector_model)
+def intialize_model(model_name: str) -> tuple:
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
     model = AutoModelForSequenceClassification.from_pretrained(
-        dectector_model, device_map="auto"
+        model_name, device_map="auto"
     )
     return tokenizer, model
 
 
 def main(
-    data_dir,
-    log_dir,
-    source="xl-1542M-k40",
-    model=dectector_model,
-    n_train=500000,
-    n_valid=325,  # was 10000
-    n_jobs=None,
-    verbose=False,
+    data_dir: str,
+    log_dir: str,
+    source: str = "xl-1542M-k40",
+    model_name: str = dectector_model,
+    n_train: int = 500000,
+    n_valid: int = 325,  # was 10000
+    n_jobs: Optional[int] = None,
+    verbose: bool = False,
 ):
-    print("Loading data...")
-    # train_texts, train_labels = eval_utils.load_split(
-    #    data_dir, source, "train", n=n_train
-    # )
     valid_texts, valid_labels = eval_utils.load_split(
         data_dir, source, "valid", n=n_valid
     )
-    # test_texts, test_labels = eval_utils.load_split(data_dir, source, "test")
 
-    print("Initializing model...")
-    tokenizer, model = intialize_model()
+    tokenizer, model = intialize_model(model_name)
 
-    print("Tokenizing data...")
     input_ids = tokenizer(
         valid_texts, return_tensors="pt", truncation=True, padding=True
     ).input_ids.to(device)
-    print(
-        f"should start with {tokenizer.bos_token_id} and end with {tokenizer.eos_token_id}"
-    )
 
     model_predictions = []
     with torch.no_grad():
-        # run the GPT model to get the logits
         logits = model(input_ids).logits
 
         for i, logit in enumerate(logits):
