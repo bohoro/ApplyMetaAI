@@ -1,13 +1,12 @@
 import json
 
+import eval_utils
 import fire
 import numpy as np
 from scipy import sparse
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GridSearchCV, PredefinedSplit
-
-import eval_utils
 
 
 def main(

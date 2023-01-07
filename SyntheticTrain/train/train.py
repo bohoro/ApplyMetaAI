@@ -1,80 +1,45 @@
-from typing import Optional
-
-import fire
-from load_datasets import get_dataset
 import torch
-from transformers import AutoModelForSequenceClassification, AutoTokenizer
-import pdb
 
-# Set device to GPU if available, otherwise CPU
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+"""
+See:
 
-# Define the model to be used
-dectector_model = "roberta-base-openai-detector"
+https://huggingface.co/course/chapter7/3
 
+https://colab.research.google.com/github/huggingface/notebooks/blob/main/transformers_doc/en/pytorch/training.ipynb#scrollTo=8HDSJMechBMt
 
-def initialize_model(model_name: str) -> tuple:
-    """Initialize a tokenizer and model from a model name.
+https://huggingface.co/course/chapter8/2?fw=pt
 
-    Args:
-        model_name: The model to use. For example, "distilbert-base-uncased".
-    Returns:
-        A tokenizer and model.
-    """
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForSequenceClassification.from_pretrained(
-        model_name, device_map="auto"
-    )
-    return tokenizer, model
+"""
+from transformers import AutoModelForMaskedLM
 
+model_checkpoint = "distilbert-base-uncased"
+model = AutoModelForMaskedLM.from_pretrained(model_checkpoint)
 
-def tokenize_dataset(dataset, tokenizer, max_length=512):
-    """Tokenizes the dataset.
+from transformers import AutoTokenizer
 
-    Args:
-        dataset (HuggingFace Datasets object): The dataset to be tokenized.
-        tokenizer (HuggingFace Tokenizer object): The tokenizer to be used.
-        max_length (int, optional): The maximum length of the tokenized dataset. Defaults to 512.
+tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
 
-    Returns:
-        HuggingFace Datasets object: The tokenized dataset.
-    """
-    tokenized_dataset = dataset.map(
-        lambda examples: tokenizer(
-            examples["text"], truncation=True, max_length=max_length
-        ),
-        batched=True,
-    )
-    return tokenized_dataset
+import torch
 
+text = "This is a great [MASK]."
 
-def main(
-    data_dir: str,
-    log_dir: str,
-    source: str = "xl-1542M-k40",
-    model_name: str = dectector_model,
-    n_train: int = 500000,
-    n_valid: int = 325,  # was 10000
-    n_jobs: Optional[int] = None,
-    verbose: bool = False,
-):
-    print(f"Loading model and tokenizer {model_name}.")
-    tokenizer, model = initialize_model(model_name)
+inputs = tokenizer(text, return_tensors="pt")
+token_logits = model(**inputs).logits
+# Find the location of [MASK] and extract its logits
+mask_token_index = torch.where(inputs["input_ids"] == tokenizer.mask_token_id)[1]
+mask_token_logits = token_logits[0, mask_token_index, :]
+# Pick the [MASK] candidates with the highest logits
+top_5_tokens = torch.topk(mask_token_logits, 5, dim=1).indices[0].tolist()
 
-    print("Loading datasets.")
-    train_dataset = get_dataset(data_dir, source, "train")
-    validation_dataset = get_dataset(data_dir, source, "valid")
+for token in top_5_tokens:
+    print(f"'>>> {text.replace(tokenizer.mask_token, tokenizer.decode([token]))}'")
 
-    print("Tokenizing datasets.")
-    train_dataset_tokenized = tokenize_dataset(
-        train_dataset, tokenizer, model.config.max_position_embeddings
-    )
-    validation_dataset_tokenized = tokenize_dataset(
-        validation_dataset, tokenizer, model.config.max_position_embeddings
-    )
+from datasets import load_dataset
 
-    pdb.set_trace()
+imdb_dataset = load_dataset("imdb")
 
+sample = imdb_dataset["train"].shuffle(seed=42).select(range(3))
 
-if __name__ == "__main__":
-    fire.Fire(main)
+for row in sample:
+    print(f"\n'>>> Review: {row['text']}'")
+    print(f"'>>> Label: {row['label']}'")

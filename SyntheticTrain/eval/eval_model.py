@@ -1,13 +1,12 @@
 import pdb
 from typing import Optional
 
+import eval_utils
 import fire
 import numpy as nn
 import torch
 from sklearn.metrics import accuracy_score
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
-
-import eval_utils
 
 # Set device to GPU if available, otherwise CPU
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

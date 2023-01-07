@@ -1,9 +1,9 @@
 import os
-import fire
-from datasets import load_dataset, concatenate_datasets
-
 import pdb
+
+import fire
 import psutil
+from datasets import concatenate_datasets, load_dataset
 
 
 def get_dataset(data_dir: str, source: str, split: str):
@@ -20,12 +20,14 @@ def get_dataset(data_dir: str, source: str, split: str):
     fake_path = os.path.join(data_dir, f"{source}.{split}.jsonl")
     fake_dataset = load_dataset("json", data_files=fake_path)
     label = [1] * len(fake_dataset["train"])
-    fake_dataset = fake_dataset["train"].add_column("label", label)
+    fake_dataset = fake_dataset["train"].remove_columns(["id", "ended", "length"])
+    fake_dataset = fake_dataset.add_column("label", label)
 
     real_path = os.path.join(data_dir, f"webtext.{split}.jsonl")
     real_dataset = load_dataset("json", data_files=real_path)
     label = [0] * len(real_dataset["train"])
-    real_dataset = real_dataset["train"].add_column("label", label)
+    real_dataset = real_dataset["train"].remove_columns(["id", "ended", "length"])
+    real_dataset = real_dataset.add_column("label", label)
 
     combined_dataset = concatenate_datasets([fake_dataset, real_dataset])
     combined_dataset = combined_dataset.shuffle(seed=42)
