@@ -1,3 +1,4 @@
+import pdb
 from typing import Optional
 
 import fire
@@ -6,20 +7,17 @@ from accelerate import Accelerator
 from load_datasets import get_dataset
 from torch.utils.data import DataLoader
 from tqdm import tqdm
-from transformers import (
-    AutoModelForSequenceClassification,
-    AutoTokenizer,
-    get_scheduler,
-)
-import pdb
+from transformers import (AutoModelForSequenceClassification, AutoTokenizer,
+                          get_scheduler)
 
 # Set device to GPU if available, otherwise CPU
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# Define the model to be used
-dectector_model = "roberta-base-openai-detector"
+# Define configuration
+# model examples are "roberta-base-openai-detector", "distilbert-base-uncased", "xlnet-base-cased" (tokenizer failing)
+dectector_model = "distilbert-base-uncased" 
 BATCH_SIZE = 16
-NUM_EPOCHS = 1
+NUM_EPOCHS = 3
 
 
 def initialize_model(model_name: str) -> tuple:

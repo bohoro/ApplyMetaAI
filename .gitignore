@@ -3,8 +3,14 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# local models
+*.bin
+SyntheticTrain/models/*.json
+SyntheticTrain/models/roberta-base-openai-detector_v2/*
+
 # data files
 *.jsonl
+
 
 # C extensions
 *.so
@@ -130,3 +136,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+

@@ -1,0 +1,96 @@
+Traceback (most recent call last):
+  File "accelerate_train.py", line 6, in <module>
+    from accelerate import Accelerator
+  File "/private/home/bohoro/.conda/envs/amai/lib/python3.8/site-packages/accelerate/__init__.py", line 26, in <module>
+    from .utils import rich
+  File "/private/home/bohoro/.conda/envs/amai/lib/python3.8/site-packages/accelerate/utils/rich.py", line 19, in <module>
+    from rich.traceback import install
+  File "/private/home/bohoro/.conda/envs/amai/lib/python3.8/site-packages/rich/traceback.py", line 19, in <module>
+    from .columns import Columns
+  File "/private/home/bohoro/.conda/envs/amai/lib/python3.8/site-packages/rich/columns.py", line 7, in <module>
+    from .console import Console, ConsoleOptions, RenderableType, RenderResult
+  File "/private/home/bohoro/.conda/envs/amai/lib/python3.8/site-packages/rich/console.py", line 48, in <module>
+    from . import errors, themes
+  File "<frozen importlib._bootstrap>", line 991, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 975, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 671, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 839, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 934, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1032, in get_data
+KeyboardInterrupt
+╭───────────────────── Traceback (most recent call last) ──────────────────────╮
+│ /private/home/bohoro/.conda/envs/amai/bin/accelerate:8 in <module>           │
+│                                                                              │
+│   5 from accelerate.commands.accelerate_cli import main                      │
+│   6 if __name__ == '__main__':                                               │
+│   7 │   sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])     │
+│ ❱ 8 │   sys.exit(main())                                                     │
+│   9                                                                          │
+│                                                                              │
+│ /private/home/bohoro/.conda/envs/amai/lib/python3.8/site-packages/accelerate │
+│ /commands/accelerate_cli.py:45 in main                                       │
+│                                                                              │
+│   42 │   │   exit(1)                                                         │
+│   43 │                                                                       │
+│   44 │   # Run                                                               │
+│ ❱ 45 │   args.func(args)                                                     │
+│   46                                                                         │
+│   47                                                                         │
+│   48 if __name__ == "__main__":                                              │
+│                                                                              │
+│ /private/home/bohoro/.conda/envs/amai/lib/python3.8/site-packages/accelerate │
+│ /commands/launch.py:1104 in launch_command                                   │
+│                                                                              │
+│   1101 │   elif defaults is not None and defaults.compute_environment == Com │
+│   1102 │   │   sagemaker_launcher(defaults, args)                            │
+│   1103 │   else:                                                             │
+│ ❱ 1104 │   │   simple_launcher(args)                                         │
+│   1105                                                                       │
+│   1106                                                                       │
+│   1107 def main():                                                           │
+│                                                                              │
+│ /private/home/bohoro/.conda/envs/amai/lib/python3.8/site-packages/accelerate │
+│ /commands/launch.py:565 in simple_launcher                                   │
+│                                                                              │
+│    562 │   current_env["OMP_NUM_THREADS"] = str(args.num_cpu_threads_per_pro │
+│    563 │                                                                     │
+│    564 │   process = subprocess.Popen(cmd, env=current_env)                  │
+│ ❱  565 │   process.wait()                                                    │
+│    566 │   if process.returncode != 0:                                       │
+│    567 │   │   raise subprocess.CalledProcessError(returncode=process.return │
+│    568                                                                       │
+│                                                                              │
+│ /private/home/bohoro/.conda/envs/amai/lib/python3.8/subprocess.py:1083 in    │
+│ wait                                                                         │
+│                                                                              │
+│   1080 │   │   if timeout is not None:                                       │
+│   1081 │   │   │   endtime = _time() + timeout                               │
+│   1082 │   │   try:                                                          │
+│ ❱ 1083 │   │   │   return self._wait(timeout=timeout)                        │
+│   1084 │   │   except KeyboardInterrupt:                                     │
+│   1085 │   │   │   # https://bugs.python.org/issue25942                      │
+│   1086 │   │   │   # The first keyboard interrupt waits briefly for the chil │
+│                                                                              │
+│ /private/home/bohoro/.conda/envs/amai/lib/python3.8/subprocess.py:1806 in    │
+│ _wait                                                                        │
+│                                                                              │
+│   1803 │   │   │   │   │   with self._waitpid_lock:                          │
+│   1804 │   │   │   │   │   │   if self.returncode is not None:               │
+│   1805 │   │   │   │   │   │   │   break  # Another thread waited.           │
+│ ❱ 1806 │   │   │   │   │   │   (pid, sts) = self._try_wait(0)                │
+│   1807 │   │   │   │   │   │   # Check the pid and loop as waitpid has been  │
+│   1808 │   │   │   │   │   │   # return 0 even without WNOHANG in odd situat │
+│   1809 │   │   │   │   │   │   # http://bugs.python.org/issue14396.          │
+│                                                                              │
+│ /private/home/bohoro/.conda/envs/amai/lib/python3.8/subprocess.py:1764 in    │
+│ _try_wait                                                                    │
+│                                                                              │
+│   1761 │   │   def _try_wait(self, wait_flags):                              │
+│   1762 │   │   │   """All callers to this function MUST hold self._waitpid_l │
+│   1763 │   │   │   try:                                                      │
+│ ❱ 1764 │   │   │   │   (pid, sts) = os.waitpid(self.pid, wait_flags)         │
+│   1765 │   │   │   except ChildProcessError:                                 │
+│   1766 │   │   │   │   # This happens if SIGCLD is set to be ignored or wait │
+│   1767 │   │   │   │   # for child processes has otherwise been disabled for │
+╰──────────────────────────────────────────────────────────────────────────────╯
+KeyboardInterrupt
