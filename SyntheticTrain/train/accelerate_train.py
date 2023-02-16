@@ -4,6 +4,7 @@ from typing import Optional
 import fire
 import torch
 from accelerate import Accelerator
+from accelerate.utils import LoggerType
 from load_datasets import get_dataset
 from torch.utils.data import DataLoader
 from tqdm import tqdm
@@ -67,7 +68,9 @@ def main(
     n_jobs: Optional[int] = None,
     verbose: bool = False,
 ):
-    accelerator = Accelerator()
+    accelerator = Accelerator(log_with=LoggerType.TENSORBOARD, logging_dir=log_dir)
+    config = {"num_iterations": 1}
+    accelerator.init_trackers("SyntheticTrain", config=config)
 
     print(f"Loading model and tokenizer {model_name}.")
     tokenizer, model = initialize_model(model_name)
@@ -104,19 +107,21 @@ def main(
     )
 
     progress_bar = tqdm(range(num_training_steps))
+    
 
     model.train()
     print("Training model.")
     for epoch in range(num_epochs):
-        for i, batch in enumerate(train_dataloader):
+        for i, batch in enumerate(train_dataloader):  # i goes up to 93750
             outputs = model(
                 batch["input_ids"].to(device),
                 batch["attention_mask"].to(device),
                 labels=batch["label"].to(device),
             )
             loss = outputs.loss
-            if accelerator.is_main_process and i % 10 == 0:
-                progress_bar.set_description(f"Epoch {epoch} Loss {loss.item()}")
+            if accelerator.is_main_process and i % 50 == 0:
+                progress_bar.set_description(f"Epoch {epoch}, Step {i} Loss {loss.item()}")
+                accelerator.log({"train_loss": loss.item()}, step=i)
             accelerator.backward(loss)
 
             optimizer.step()
@@ -124,12 +129,16 @@ def main(
             optimizer.zero_grad()
             progress_bar.update(1)
 
+    accelerator.end_training()
     # save the model
-    print(f"Saving model to {model_dir}")
-    model.save_pretrained(model_dir)
+    #print(f"Saving model to {model_dir}")
+    #model.save_pretrained(model_dir)
 
     print("Complete")
 
 
 if __name__ == "__main__":
     fire.Fire(main)
+
+
+# example run - accelerate launch accelerate_train.py ../data/ ../logs/ ../models/

@@ -137,3 +137,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+SyntheticTrain/logs/start_tensorboard.sh
+SyntheticTrain/logs/SyntheticTrain/events.out.tfevents.1675541829.devfair0220.1002322.0
+SyntheticTrain/logs/SyntheticTrain/1675541829.8790798/events.out.tfevents.1675541829.devfair0220.1002322.1
+SyntheticTrain/logs/SyntheticTrain/1675541829.8864357/hparams.yml
